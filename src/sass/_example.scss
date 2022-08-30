@@ -26,3 +26,55 @@
   background-size: cover;
   background-position: center;
 }
+
+.div {
+  display: flex;
+  justify-content: center;
+  background-color: teal;
+}
+
+.search-form {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.button {
+  background-color: white;
+  border: none;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-right: 7px;
+  padding-left: 7px;
+  display: inline-block;
+}
+
+.button:hover,
+.button:focus {
+  cursor: pointer;
+  background-color: azure;
+  outline: 0;
+  outline-offset: 0;
+}
+
+.input {
+  outline: none;
+  border: 1px solid black;
+  padding-right: 30px;
+}
+
+.photo-card {
+  display: flex;
+}
+
+.load-more {
+  display: block;
+}
+
+.load-more {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-right: 10px;
+  padding-left: 10px;
+  background-color: LightSteelBlue;
+  border: 1px solid black;
+}

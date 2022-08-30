@@ -5,11 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Page title</title>
     <link rel="stylesheet" href="./sass/index.scss" />
-    <script type="module" src="./index.js"></script>
   </head>
   <body>
-    <p>dsfdfgfsgdfgdfgd</p>
+    <div class="div">
+      <form class="search-form" id="search-form">
+        <input
+          class="input"
+          type="text"
+          name="searchQuery"
+          autocomplete="off"
+          placeholder="Поиск изображений..."
+        />
+        <button type="submit" class="button">Search</button>
+      </form>
+    </div>
+
+    <div class="gallery">
+      <!-- Карточки изображений -->
+    </div>
+
+    <button type="button" class="load-more">
+      ты хочешь видеть больше картиночек?😚
+    </button>
+
     <!-- ❗️❗️❗️ Add partials like so for every page -->
     <include src="./partials/example.html"></include>
+    <script type="module" src="./index.js"></script>
   </body>
 </html>
