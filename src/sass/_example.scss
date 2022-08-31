@@ -29,6 +29,7 @@
 
 .div {
   display: flex;
+
   justify-content: center;
   background-color: teal;
 }
@@ -62,10 +63,6 @@
   padding-right: 30px;
 }
 
-.photo-card {
-  display: flex;
-}
-
 .load-more {
   display: block;
 }
@@ -77,4 +74,9 @@
   padding-left: 10px;
   background-color: LightSteelBlue;
   border: 1px solid black;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
 }
