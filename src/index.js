@@ -1,92 +1,70 @@
-import Notiflix from "notiflix";
- import simpleLightbox from "simplelightbox";
+import Notiflix from 'notiflix';
+// Описан в документации
+import SimpleLightbox from 'simplelightbox';
+// Дополнительный импорт стилей
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
-
+import { render } from '../render';
+import { fetchApi } from '../fetch-images';
+import axios from 'axios';
 
 const button = document.querySelector('.button');
 const form = document.querySelector('.search-form');
 const markup = document.querySelector('.gallery');
 const input = document.querySelector('.input');
-const API_KEY = '29596278-1db73915ee4ad13e2bf785c69'
-const URL = 'https://pixabay.com/api/?key=29596278-1db73915ee4ad13e2bf785c69'
-const gallery = document.querySelector('.gallery')
-const loadMore = document.querySelector('.load-more')
+const API_KEY = '29596278-1db73915ee4ad13e2bf785c69';
+const URL = 'https://pixabay.com/api/?key=29596278-1db73915ee4ad13e2bf785c69';
+const gallery = document.querySelector('.gallery');
+const loadMore = document.querySelector('.load-more');
 let page = 1;
+const MYAPI_KEY = '29596278-1db73915ee4ad13e2bf785c69';
+    const MYURL = 'https://pixabay.com/api/';
+
+let simpleLightBox;
 
 
 
- form.addEventListener('submit', fetchFoo)
 
 
 
-function fetchFoo(event) {
-   
-    event.preventDefault();
-    console.log(event)
-    const inputValue = input.value.trim();
+form.addEventListener('submit', fetchFoo);
+
+async function fetchFoo(event) {
+  event.preventDefault();
+  console.log(event);
+  const inputValue = input.value.trim();
+  form.reset();
+
+  gallery.innerHTML = '';
+  loadMore.textContent = 'ты хочешь видеть больше картиночек?😚';
+
+
+
+
+
+
+
+ 
+  
+
+  axios.defaults.baseURL = MYURL;
+ await axios.get(`?key=${MYAPI_KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`).then(resp => {
+    if (resp.data.hits.length === 0) {
+         Notiflix.Report.failure('извините, вы ищите какую-то хрень');
+    }
     
-
-    gallery.innerHTML = '';
-    loadMore.textContent = 'ты хочешь видеть больше картиночек?😚'
-
-  fetch(
-      `${URL}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=6`
-  )
-      
-      
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-
-      return response.json();
-    })
-      .then(data => {
-        
-          if (data.hits.length === 0) {
-              Notiflix.Report.failure('извините, вы ищите какую-то хрень');
-          }
-          
-          
-        console.log(data)
-          render(data.hits)
-          Notiflix.Notify.success(`мы нашли ${data.hits.length} картинок`);
-    })
-      
-
-    .catch(error => {
-      console.log(error);
-    });
-
-   
-};
+    render(resp.data.hits)
+    simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+    Notiflix.Notify.success(`мы нашли ${resp.data.totalHits} картиночек`);
+  })
 
 
-function render(oneImage) {
-  const markup = oneImage
-    .map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
-      return `<div class="photo-card">
-  <img  src="${webformatURL}" alt="" loading="lazy"/>
-  <div class="info">
-    <p class="info-item">
-      <b> Лайки: ${likes}</b>
-    </p>
-    <p class="info-item">
-      <b> Просмотры: ${views}</b>
-    </p>
-    <p class="info-item">
-      <b> Комментарии: ${comments}</b>
-    </p>
-    <p class="info-item">
-      <b> Загрузки: ${downloads}</b>
-    </p>
-  </div>
-</div>`;
-    })
-    .join('');
 
-  gallery.insertAdjacentHTML('beforeend', markup);
-};
+
+  
+
+  loadMore.classList.remove('is-hidden');
+}
 
 
 
@@ -99,64 +77,21 @@ function render(oneImage) {
 
 
 loadMore.addEventListener('click', loadMoreFunction);
+async function loadMoreFunction() {
+  loadMore.textContent = 'хочешь еще сладенький 😍🤭💕?';
+  page += 1;
+const inputValue = input.value.trim();
+ 
+   
+     axios.defaults.baseURL = MYURL;
+await axios.get(`?key=${MYAPI_KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`).then(resp => {
+    render(resp.data.hits)
+    simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+  
+  })
+   
 
-
-
-function loadMoreFunction() {
-    loadMore.textContent = 'хочешь еще сладенький 😍🤭💕?'
-    page += 1
-    // fetchFoo()
-
-
-
- fetch(
-      `${URL}&q=${input.value}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=6`
-  )
-      
-      
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-
-      return response.json();
-    })
-      .then(data => {
-        
-          if (data.hits.length === 0) {
-              Notiflix.Report.failure('извините, вы ищите какую-то хрень');
-          }
-          
-          
-        console.log(data)
-          render(data.hits)
-          Notiflix.Notify.success(`мы нашли ${data.hits.length} картинок`);
-    })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    console.log(page)
+  console.log(page);
 }
 
 
@@ -171,39 +106,28 @@ function loadMoreFunction() {
 
 
 
+// function render(oneImage) {
+//   const markup = oneImage
+//     .map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
+//       return `<a class="photo-link" href="${largeImageURL}">
+//         <img class="image" src="${webformatURL}" alt="${tags}" loading="lazy"  width="300" height="300"/>
+//       </a>
+//     <p class="info-item">
+//       <b> Лайки: ${likes}</b>
+//     </p>
+//     <p class="info-item">
+//       <b> Просмотры: ${views}</b>
+//     </p>
+//     <p class="info-item">
+//       <b> Комментарии: ${comments}</b>
+//     </p>
+//     <p class="info-item">
+//       <b> Загрузки: ${downloads}</b>
+//     </p>
+// `;
+//     })
+//     .join('');
 
+//     gallery.insertAdjacentHTML('beforeend', markup);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// };
