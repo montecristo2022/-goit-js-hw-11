@@ -52,7 +52,7 @@ async function fetchFoo(event) {
   
 
   axios.defaults.baseURL = MYURL;
- await axios.get(`?key=${MYAPI_KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&${perPage}`).then(resp => {
+ await axios.get(`?key=${MYAPI_KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`).then(resp => {
     if (resp.data.hits.length === 0) {
          Notiflix.Report.failure('извините, вы ищите какую-то хрень');
     }
@@ -86,7 +86,7 @@ const inputValue = input.value;
  
    
      axios.defaults.baseURL = MYURL;
-await axios.get(`?key=${MYAPI_KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&${perPage}`).then(resp => {
+await axios.get(`?key=${MYAPI_KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`).then(resp => {
     render(resp.data.hits)
   simpleLightBox = new SimpleLightbox('.gallery a').refresh();
   
