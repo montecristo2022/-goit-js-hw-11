@@ -43,14 +43,6 @@ async function fetchFoo(event) {
   loadMore.textContent = 'ты хочешь видеть больше картиночек?😚';
 
 
-
-
-
-
-
- 
-  
-
   axios.defaults.baseURL = MYURL;
  await axios.get(`?key=${MYAPI_KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`).then(resp => {
     if (resp.data.hits.length === 0) {
@@ -65,7 +57,9 @@ async function fetchFoo(event) {
    }
    
   })
-} 
+  } else if (!inputValue) {
+    Notiflix.Report.failure('введите текст');
+}
 }
 
 
