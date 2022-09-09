@@ -21,7 +21,7 @@ const MYAPI_KEY = '29596278-1db73915ee4ad13e2bf785c69';
     const MYURL = 'https://pixabay.com/api/';
 
 let simpleLightBox;
-
+let perPage = 40;
 
 
 
@@ -33,7 +33,11 @@ async function fetchFoo(event) {
   event.preventDefault();
   console.log(event);
   const inputValue = input.value.trim();
-  form.reset();
+  let page = 1;
+
+  if (inputValue) {
+    
+
 
   gallery.innerHTML = '';
   loadMore.textContent = 'ты хочешь видеть больше картиночек?😚';
@@ -48,22 +52,20 @@ async function fetchFoo(event) {
   
 
   axios.defaults.baseURL = MYURL;
- await axios.get(`?key=${MYAPI_KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`).then(resp => {
+ await axios.get(`?key=${MYAPI_KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&${perPage}`).then(resp => {
     if (resp.data.hits.length === 0) {
          Notiflix.Report.failure('извините, вы ищите какую-то хрень');
     }
     
-    render(resp.data.hits)
+   if (resp.data.hits.length > 0) {
+     loadMore.classList.remove('is-hidden');
+        render(resp.data.hits)
     simpleLightBox = new SimpleLightbox('.gallery a').refresh();
     Notiflix.Notify.success(`мы нашли ${resp.data.totalHits} картиночек`);
+   }
+   
   })
-
-
-
-
-  
-
-  loadMore.classList.remove('is-hidden');
+} 
 }
 
 
@@ -80,13 +82,25 @@ loadMore.addEventListener('click', loadMoreFunction);
 async function loadMoreFunction() {
   loadMore.textContent = 'хочешь еще сладенький 😍🤭💕?';
   page += 1;
-const inputValue = input.value.trim();
+const inputValue = input.value;
  
    
      axios.defaults.baseURL = MYURL;
-await axios.get(`?key=${MYAPI_KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`).then(resp => {
+await axios.get(`?key=${MYAPI_KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&${perPage}`).then(resp => {
     render(resp.data.hits)
-    simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+  simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+  
+
+
+
+ 
+
+     const totalPages = Math.ceil(resp.data.hits.length / perPage);
+
+      if (page > totalPages) {
+        loadMore.classList.add('is-hidden');
+        Notiflix.Notify.info(`у нас нет больше картиночек`);
+      }
   
   })
    
