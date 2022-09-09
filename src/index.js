@@ -49,6 +49,17 @@ async function fetchFoo(event) {
          Notiflix.Report.failure('извините, вы ищите какую-то хрень');
     }
     
+   
+  //  try {
+     
+     
+  //  } catch {
+     
+     
+  //  }
+   
+   
+   
    if (resp.data.hits.length > 0) {
      loadMore.classList.remove('is-hidden');
         render(resp.data.hits)
@@ -89,8 +100,9 @@ await axios.get(`?key=${MYAPI_KEY}&q=${inputValue}&image_type=photo&orientation=
 
  
 
-     const totalPages = Math.ceil(resp.data.hits.length / perPage);
-
+     const totalPages = Math.ceil(resp.data.totalHits / perPage);
+  console.log(resp.data.hits.length)
+  console.log(totalPages)
       if (page > totalPages) {
         loadMore.classList.add('is-hidden');
         Notiflix.Notify.info(`у нас нет больше картиночек`);
