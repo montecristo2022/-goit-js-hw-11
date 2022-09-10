@@ -62,28 +62,54 @@ page = 1;
     
     
     
-    
-    try {
-       axios.defaults.baseURL = MYURL;
-    await axios.get(`?key=${MYAPI_KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`).then(resp => {
-    if (resp.data.hits.length === 0) {
-         Notiflix.Report.failure('извините, вы ищите какую-то хрень');
-    }
+  
+//        axios.defaults.baseURL = MYURL;
+//     await axios.get(`?key=${MYAPI_KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`).then(resp => {
+//     if (resp.data.hits.length === 0) {
+//          Notiflix.Report.failure('извините, вы ищите какую-то хрень');
+//     }
     
   
-   if (resp.data.hits.length > 0) {
+//    if (resp.data.hits.length > 0) {
+//      loadMore.classList.remove('is-hidden');
+//         render(resp.data.hits)
+//     simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+//     Notiflix.Notify.success(`мы нашли ${resp.data.totalHits} картиночек`);
+//       }
+      
+
+//       if (resp.data.hits.length < 40) {
+//         loadMore.classList.add('is-hidden');
+//       }
+
+//  })
+    
+    
+    
+    
+    try {
+      axios.defaults.baseURL = MYURL;
+      const response = await axios.get(`?key=${MYAPI_KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`)
+      if (response.data.hits.length === 0) {
+        Notiflix.Report.failure('извините, вы ищите какую-то хрень');
+        
+      }
+      
+
+       if (response.data.hits.length > 0) {
      loadMore.classList.remove('is-hidden');
-        render(resp.data.hits)
+        render(response.data.hits)
     simpleLightBox = new SimpleLightbox('.gallery a').refresh();
-    Notiflix.Notify.success(`мы нашли ${resp.data.totalHits} картиночек`);
-   }
+    Notiflix.Notify.success(`мы нашли ${response.data.totalHits} картиночек`);
+      }
 
- })
-    } catch {error > console.log(error)}
-    
-    
 
-    
+       if (response.data.hits.length < 40) {
+        loadMore.classList.add('is-hidden');
+      }
+    } catch (error) {
+      console.log(error)
+    }
     
     
     
@@ -111,25 +137,48 @@ async function loadMoreFunction() {
 const inputValue = input.value;
  
    
-     axios.defaults.baseURL = MYURL;
-await axios.get(`?key=${MYAPI_KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`).then(resp => {
-    render(resp.data.hits)
-  simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+//      axios.defaults.baseURL = MYURL;
+// await axios.get(`?key=${MYAPI_KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`).then(resp => {
+//     render(resp.data.hits)
+//   simpleLightBox = new SimpleLightbox('.gallery a').refresh();
   
 
 
 
  
 
-     const totalPages = Math.floor(resp.data.totalHits / perPage);
-  console.log(resp.data.hits.length)
+//      const totalPages = Math.floor(resp.data.totalHits / perPage);
+//   console.log(resp.data.hits.length)
+//   console.log(totalPages)
+//       if (page > totalPages) {
+//         loadMore.classList.add('is-hidden');
+//         Notiflix.Notify.info(`у нас нет больше картиночек`);
+//       }
+  
+//   })
+  
+  
+  
+  try {
+axios.defaults.baseURL = MYURL;
+const response = await axios.get(`?key=${MYAPI_KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`)
+render(response.data.hits)
+    simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+    
+    const totalPages = Math.floor(response.data.totalHits / perPage);
+  console.log(response.data.hits.length)
   console.log(totalPages)
       if (page > totalPages) {
         loadMore.classList.add('is-hidden');
         Notiflix.Notify.info(`у нас нет больше картиночек`);
       }
+
+  } catch(error){console.log(error)}
   
-  })
+  
+  
+  
+  
    
 
   console.log(page);
