@@ -33,7 +33,7 @@ async function fetchFoo(event) {
   event.preventDefault();
   console.log(event);
   const inputValue = input.value.trim();
-  let page = 1;
+page = 1;
 
   if (inputValue) {
     
@@ -106,7 +106,7 @@ async function fetchFoo(event) {
 
 loadMore.addEventListener('click', loadMoreFunction);
 async function loadMoreFunction() {
-  loadMore.textContent = 'хочешь еще сладенький 😍🤭💕?';
+
   page += 1;
 const inputValue = input.value;
  
@@ -121,7 +121,7 @@ await axios.get(`?key=${MYAPI_KEY}&q=${inputValue}&image_type=photo&orientation=
 
  
 
-     const totalPages = Math.ceil(resp.data.totalHits / perPage);
+     const totalPages = Math.floor(resp.data.totalHits / perPage);
   console.log(resp.data.hits.length)
   console.log(totalPages)
       if (page > totalPages) {
